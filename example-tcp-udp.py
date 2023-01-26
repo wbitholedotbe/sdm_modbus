@@ -7,9 +7,11 @@ import sdm_modbus
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("host", type=str, help="Modbus TCP address")
-    argparser.add_argument("port", type=int, help="Modbus TCP port")
+    argparser.add_argument("host", type=str, help="Modbus TCP/UDP address")
+    argparser.add_argument("port", type=int, help="Modbus TCP/UDP port")
+    argparser.add_argument("--udp", action="store_true", default=False, help="Use Modbus UDP mode")
     argparser.add_argument("--timeout", type=int, default=1, help="Connection timeout")
+    argparser.add_argument("--framer", type=str, default=None, help="Framer (rtu|socket|ascii|binary)")
     argparser.add_argument("--unit", type=int, default=1, help="Modbus device address")
     argparser.add_argument("--json", action="store_true", default=False, help="Output as JSON")
     args = argparser.parse_args()
@@ -18,7 +20,9 @@ if __name__ == "__main__":
         host=args.host,
         port=args.port,
         timeout=args.timeout,
-        unit=args.unit
+        framer=args.framer,
+        unit=args.unit,
+        udp=args.udp 
     )
 
     if args.json:
