@@ -8,8 +8,8 @@ from pymodbus.client import ModbusUdpClient
 from pymodbus.client import ModbusSerialClient
 from pymodbus.payload import BinaryPayloadBuilder
 from pymodbus.payload import BinaryPayloadDecoder
-from pymodbus.register_read_message import ReadInputRegistersResponse
-from pymodbus.register_read_message import ReadHoldingRegistersResponse
+from pymodbus.pdu.register_read_message import ReadInputRegistersResponse
+from pymodbus.pdu.register_read_message import ReadHoldingRegistersResponse
 
 
 class connectionType(enum.Enum):
@@ -51,8 +51,8 @@ class Meter:
     parity = "N"
     baud = 38400
 
-    wordorder = Endian.Big
-    byteorder = Endian.Big
+    wordorder = Endian.BIG
+    byteorder = Endian.BIG
     
     udp = False
 
@@ -215,7 +215,7 @@ class Meter:
         return None
 
     def _write_holding_register(self, address, value):
-        return self.client.write_registers(address=address, values=value, unit=self.unit)
+        return self.client.write_registers(address=address, values=value)
 
     def _encode_value(self, data, dtype):
         builder = BinaryPayloadBuilder(byteorder=self.byteorder, wordorder=self.wordorder)
